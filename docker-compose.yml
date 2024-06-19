@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  story.teller.main:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    command: npm start
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT}:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules

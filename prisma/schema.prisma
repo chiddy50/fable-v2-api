@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                   String    @id @default(cuid())
+  email                String?   @unique
+  emailVerified        DateTime?
+  name                 String?
+  publicId             String?   @unique
+  primaryWalletAddress String?
+  createdAt            DateTime  @default(now())
+  stories              Story[]
+  memories             Memory[]
+  session              Session?
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  summary   String?
+  publicId  String?  @unique
+  metaData  Json?
+  createdAt DateTime @default(now())
+  memories  Memory[]
+  User      User     @relation(fields: [userId], references: [id])
+}
+
+model Memory {
+  id          String   @id @default(cuid())
+  userId      String
+  sessionId   String
+  content     String
+  role        String
+  roleType    String
+  token_count String?
+  publicId    String?  @unique
+  metaData    Json?
+  createdAt   DateTime @default(now())
+  session     Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Story {
+  id        String   @id @default(cuid())
+  userId    String
+  story     Json
+  script    Json?
+  publicId  String?  @unique
+  metaData  Json?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
