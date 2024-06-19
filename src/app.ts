@@ -9,7 +9,7 @@ import MemoryController from "./controllers/Memory";
 dotenv.config();
 
 const app = express();
-const port = 3200;
+const port = 3000;
 
 app.use(cors());
 app.use(express.json());
