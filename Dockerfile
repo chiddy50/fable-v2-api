@@ -19,7 +19,7 @@ RUN npm run build
 RUN prisma generate
 
 # Expose the port that your app runs on
-EXPOSE 3000
+EXPOSE 3001
 
 # Command to run your application
 CMD ["npm", "start"]
